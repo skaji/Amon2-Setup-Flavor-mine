@@ -12,13 +12,12 @@ use <?= $arg->{module} ?>::Web;
 my $mode = <?= $arg->{module} ?>::Web->mode_name;
 
 my $app = builder {
-    enable 'Static', path => qr{^(?:/static/)}, root => $base;
+    enable 'Static', path => qr{^/static/}, root => $base;
     enable 'Static', path => qr{^/favicon\.ico$}, root => "$base/static";
-    # enable 'ReverseProxy';
+    enable 'ReverseProxy';
     if ($mode eq 'production') {
-        enable 'AccessLog::RotateLogs',
-            logfile => "$base/logs/access_log.%Y%m%d", maxage => 60 * 60 * 24 * 30;
-    } else {
+        enable 'AccessLog::RotateLogs', logfile => "$base/logs/access_log.%Y%m%d";
+    } elsif ($mode eq 'development') {
         enable 'AccessLog';
     }
     <?= $arg->{module} ?>::Web->to_app;
@@ -35,7 +34,8 @@ unless (caller) {
         'max-workers=i' => \(my $max_workers = 4),
     );
 
-    print scalar(localtime), ": http://0.0.0.0:${port}/\n";
+    print scalar(localtime),
+        ": start httpd with mode=$mode, port=$port, max_workers=$max_workers\n";
 
     my $loader = Plack::Loader->load('Starlet',
         port        => $port,

@@ -6,7 +6,8 @@ use File::Find qw(find);
 my @module;
 find sub {
     my $name = $File::Find::name;
-    return if $name =~ s/\.pm$//;
+    return unless -f;
+    return unless $name =~ s/\.pm$//;
     $name =~ s{lib/}{};
     $name =~ s{/}{::}g;
     push @module, $name;

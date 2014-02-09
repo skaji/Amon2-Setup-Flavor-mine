@@ -1,4 +1,14 @@
-CREATE TABLE IF NOT EXISTS member (
-    id           INTEGER NOT NULL PRIMARY KEY,
-    name         VARCHAR(255)
+CREATE TABLE IF NOT EXISTS `user` (
+      `id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+    , `name`  VARCHAR(255) NOT NULL
+    , UNIQUE(name)
+);
+
+CREATE TABLE IF NOT EXISTS `item` (
+      `id`         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+    , `user_id`    INTEGER NOT NULL
+    , `name`       VARCHAR(255) NOT NULL
+    , `created_at` INTEGER UNSIGNED NOT NULL
+    , `updated_at` INTEGER UNSIGNED NOT NULL
+    , FOREIGN KEY(user_id) REFERENCES user(id)
 );

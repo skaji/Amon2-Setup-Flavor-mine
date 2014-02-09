@@ -22,9 +22,10 @@ sub db {
     if (!exists $c->{db}) {
         my $conf = $c->config->{DBI} or die "Missing configuration about DBI";
 
-        my $on_connect_do = $conf->[0] =~ /mysql/i  ? ['SET SESSION sql_mode=STRICT_TRANS_TABLES;']
-                          : $conf->[0] =~ /sqlite/i ? []
-                          : die "ERROR support only mysql or sqlite";
+        my $on_connect_do =
+              $conf->[0] =~ /mysql/i  ? ['SET SESSION sql_mode=STRICT_TRANS_TABLES;']
+            : $conf->[0] =~ /sqlite/i ? ['PRAGMA foreign_keys = ON;']
+            : die "ERROR support only mysql or sqlite";
         $c->{db} = <?= $arg->{module} ?>::DB->new(
             schema       => $schema,
             connect_info => [@$conf],

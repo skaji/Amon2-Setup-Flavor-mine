@@ -46,7 +46,7 @@ sub _session {
     if (!exists $self->{session}) {
         $self->{session} = HTTP::Session2::ClientStore->new(
             env => $self->req->env,
-            secret => 'cR7PAmTsT0xEg3IUpQ0E76OVUQNmYasJ',
+            secret => '<?= $arg->{random_string}->(32) ?>',
         );
     }
     return $self->{session};
