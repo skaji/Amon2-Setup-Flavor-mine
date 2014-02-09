@@ -1,17 +1,14 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title><: $title || '<?= $arg->{module} ?>' :></title>
-    <meta http-equiv="Content-Style-Type" content="text/css" />
-    <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
-    <meta name="format-detection" content="telephone=no" />
+    <meta charset="utf-8">
+    <title><: $title || '<?= $arg->{dist} ?>' :></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="<: uri_for('/static/js/jquery-2.0.3.min.js') :>"></script>
-    <link href="<: uri_for('/static/bootstrap/css/bootstrap.css') :>" rel="stylesheet" type="text/css" />
+    <link href="<: uri_for('/static/bootstrap/css/bootstrap.css') :>" rel="stylesheet" />
     <script src="<: uri_for('/static/bootstrap/js/bootstrap.js') :>"></script>
     <script src="<: uri_for('/static/js/xsrf-token.js') :>"></script>
-    <link href="<: static_file('/static/css/main.css') :>" rel="stylesheet" type="text/css" media="screen" />
+    <link href="<: static_file('/static/css/main.css') :>" rel="stylesheet" media="screen" />
     <script src="<: static_file('/static/js/main.js') :>"></script>
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
