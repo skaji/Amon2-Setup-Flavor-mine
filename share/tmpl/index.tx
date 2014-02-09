@@ -1,0 +1,7 @@
+: cascade "layout/main.tx"
+
+: override content -> {
+
+<h1 class="page-header"><?= $arg->{dist} ?></h1>
+
+: }

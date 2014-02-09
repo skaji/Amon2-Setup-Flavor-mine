@@ -1,0 +1,48 @@
+#!perl
+use strict;
+use warnings;
+use utf8;
+use Cwd qw(abs_path);
+use File::Basename qw(dirname);
+use File::Spec::Functions qw(catdir);
+my $base; BEGIN { $base = abs_path catdir(dirname(__FILE__), '..') }
+use Plack::Builder;
+use <?= $arg->{module} ?>::Web;
+
+my $mode = <?= $arg->{module} ?>::Web->mode_name;
+
+my $app = builder {
+    enable 'Static', path => qr{^(?:/static/)}, root => $base;
+    enable 'Static', path => qr{^/favicon\.ico$}, root => "$base/static";
+    # enable 'ReverseProxy';
+    if ($mode eq 'production') {
+        enable 'AccessLog::RotateLogs',
+            logfile => "$base/logs/access_log.%Y%m%d", maxage => 60 * 60 * 24 * 30;
+    } else {
+        enable 'AccessLog';
+    }
+    <?= $arg->{module} ?>::Web->to_app;
+};
+
+unless (caller) {
+    require Getopt::Long;
+    require Plack::Loader;
+    my $p = Getopt::Long::Parser->new(
+        config => [qw(posix_default no_ignore_case)]
+    );
+    $p->getoptions(
+        'p|port=i'      => \(my $port = 5000),
+        'max-workers=i' => \(my $max_workers = 4),
+    );
+
+    print scalar(localtime), ": http://0.0.0.0:${port}/\n";
+
+    my $loader = Plack::Loader->load('Starlet',
+        port        => $port,
+        host        => "0.0.0.0",
+        max_workers => $max_workers,
+    );
+    $loader->run($app);
+    exit;
+}
+return $app;
